@@ -8,45 +8,45 @@ youtube: https://youtu.be/3dgjoDAunQ0
 
 __Network Topology__
 
--I will have 2 orgs 1-Police Department 2-Forensic Department.
--One channel, one orederer
--I will have 4 nodes each of them on different machines
+-I will have 2 orgs 1-Police Department 2-Forensic Department.  
+-One channel, one orederer  
+-I will have 4 nodes each of them on different machines  
 -Each of my team member will host a peer on his machine
 
 
 __Directory Structure__
 
 
-Chaincode/
+Chaincode/  
     -evidenceVault-chaincode.js
 
-channel-artifacts/
-    -channel-artifacts/
-    -config/
-        -configtx.yaml
-        -core.yaml
-        -orderer.yaml
-    -configtx.yaml
-    ForensicDeptanchors.tx
-    generate-artifacts.sh
-    genesis.block
-    mainchannel.tx
-    PoliceDeptanchors.tx
+channel-artifacts/  
+    -channel-artifacts/  
+    -config/  
+        -configtx.yaml  
+        -core.yaml  
+        -orderer.yaml  
+    -configtx.yaml  
+    ForensicDeptanchors.tx  
+    generate-artifacts.sh  
+    genesis.block  
+    mainchannel.tx  
+    PoliceDeptanchors.tx  
 
-crypto-config/
-    -crypto-config/
-        -OrdererOrganizations/
-            -evidence-vault.com/
-                -ca/
-                -msp/ ....
-        -peerOrganizations/
-            -forensic.evidence-vault.com/
-                -ca, msp ...
-            -police.evidence-vault.com/
-                -ca, msp ...
-    crypto-config.yaml
+crypto-config/  
+    -crypto-config/  
+        -OrdererOrganizations/  
+            -evidence-vault.com/  
+                -ca/  
+                -msp/ ....  
+        -peerOrganizations/  
+            -forensic.evidence-vault.com/  
+                -ca, msp ...  
+            -police.evidence-vault.com/  
+                -ca, msp ...  
+    crypto-config.yaml  
 
-base.yaml
-create-channel.sh
-docker-compose.yaml
-Readme.md
+base.yaml  
+create-channel.sh  
+docker-compose.yaml  
+Readme.md  

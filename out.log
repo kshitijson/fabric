@@ -1,0 +1,4 @@
+CONTAINER ID   IMAGE                              COMMAND                  CREATED          STATUS          PORTS                                                                                  NAMES
+675f1bad41c1   hyperledger/fabric-peer:2.5.4      "peer node start"        50 seconds ago   Up 50 seconds   0.0.0.0:7051->7051/tcp, :::7051->7051/tcp                                              PD100.police.evidence-vault.com
+3ce5e2a87ba5   hyperledger/fabric-couchdb         "tini -- /docker-ent…"   19 hours ago     Up 50 seconds   4369/tcp, 9100/tcp, 0.0.0.0:5984->5984/tcp, :::5984->5984/tcp                          couchdbPD100
+3c947d1e5c6c   hyperledger/fabric-orderer:2.5.4   "orderer"                22 hours ago     Up 50 seconds   0.0.0.0:7050->7050/tcp, :::7050->7050/tcp, 0.0.0.0:8443->8443/tcp, :::8443->8443/tcp   orderer.evidence-vault.com

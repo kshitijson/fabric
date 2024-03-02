@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: Apache-2.0
+
+OrdererOrgs:
+  - Name: Orderer
+    Domain: evidence-vault.com
+    EnableNodeOUs: true
+    Specs:
+      - Hostname: orderer
+
+PeerOrgs:
+  - Name: PoliceDepartment
+    Domain: police.evidence-vault.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+      SANS:
+        - localhost
+      Start: 100
+      Hostname: PD{{.Index}}
+    Users:
+      Count: 1
+
+  - Name: ForensicDepartment
+    Domain: forensic.evidence-vault.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+      SANS:
+        - localhost
+      Start: 100
+      Hostname: FD{{.Index}}
+    Users:
+      Count: 1

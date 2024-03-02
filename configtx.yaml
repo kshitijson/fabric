@@ -1,0 +1,176 @@
+### Organizations ###
+
+Organizations:
+  - &OrdererOrg
+      Name: OrdererOrg
+      ID: OrdererMSP
+      MSPDir: ./crypto-config/ordererOrganizations/evidence-vault.com/msp
+      Policies:
+        Readers:
+          Type: Signature
+          Rule: "OR('OrdererMSP.member')"
+        Writers:
+          Type: Signature
+          Rule: "OR('OrdererMSP.member')"
+        Admins:
+          Type: Signature
+          Rule: "OR('OrdererMSP.admin')"
+      OrdererEndpoints:
+        - orderer.evidence-vault.com:7050
+
+  - &Police
+      Name: Police
+      ID: PoliceMSP
+      MSPDir: ./crypto-config/peerOrganizations/police.evidence-vault.com/msp
+      # AdminPrincipal: Role.ADMIN
+      AnchorPeers:
+        - Host: PD100.police.evidence-vault.com
+          Port: 7051
+      Policies:
+        Readers:
+          Type: Signature
+          Rule: "OR('PoliceMSP.member')"
+        Writers:
+          Type: Signature
+          Rule: "OR('PoliceMSP.member')"
+        Admins:
+          Type: Signature
+          Rule: "OR('PoliceMSP.admin')"
+        Endorsement:
+          Type: Signature
+          Rule: "OR('PoliceMSP.peer')"
+
+  - &Forensic
+      Name: Forensic
+      ID: ForensicMSP
+      MSPDir: ./crypto-config/peerOrganizations/forensic.evidence-vault.com/msp
+      # AdminPrincipal: Role.ADMIN
+      AnchorPeers:
+        - Host: FD100.forensic.evidence-vault.com
+          Port: 7051
+      Policies:
+        Readers:
+          Type: Signature
+          Rule: "OR('ForensicMSP.member')"
+        Writers:
+          Type: Signature
+          Rule: "OR('ForensicMSP.member')"
+        Admins:
+          Type: Signature
+          Rule: "OR('ForensicMSP.admin')"
+        Endorsement:
+          Type: Signature
+          Rule: "OR('ForensicMSP.peer')"
+
+### Capabilities ###
+
+Capabilities:
+  Channel: &ChannelCapabilities
+    V1_4_2: true
+  Orderer: &OrdererCapabilities
+    V1_4_2: true
+  Application: &ApplicationCapabilities
+    V1_4_2: true
+
+### Application ###
+
+Application: &ApplicationDefaults
+  Organizations:
+    - *Police
+    - *Forensic
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+      # Type: Signature
+      # Rule: "OR('PoliceMSP.admin', 'ForensicMSP.admin')"
+    LifecycleEndorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+    Endorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+  Capabilities:
+    <<: *ApplicationCapabilities
+
+### Orderer ###
+
+Orderer: &OrdererDefaults
+  Addresses:
+    - orderer.evidence-vault.com:7050
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 10
+    AbsoluteMaxBytes: 99 MB
+    PreferredMaxBytes: 512 KB
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    BlockValidation:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+  Capabilities:
+    <<: *OrdererCapabilities
+
+### Channel ###
+
+Channel: &ChannelDefaults
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+  Capabilities:
+    <<: *ChannelCapabilities
+
+Profiles:
+  EvidenceVaultChannel:
+    Consortium: IntegrityCollab
+    <<: *ChannelDefaults
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *Police
+        - *Forensic
+      Capabilities: 
+        <<: *ApplicationCapabilities
+  
+  EvidenceVaultOrdererGenesis:
+    <<: *ChannelDefaults
+    Capabilities:
+      <<: *ChannelCapabilities
+    Orderer:
+      <<: *OrdererDefaults
+      OrdererType: etcdraft
+      EtcdRaft:
+        Consenters:
+          - Host: orderer.evidence-vault.com
+            Port: 7050
+            ClientTLSCert: ./crypto-config/ordererOrganizations/evidence-vault.com/orderers/orderer.evidence-vault.com/tls/server.crt
+            ServerTLSCert: ./crypto-config/ordererOrganizations/evidence-vault.com/orderers/orderer.evidence-vault.com/tls/server.crt
+      Organizations:
+        - *OrdererOrg
+      Capabilities: *OrdererCapabilities
+    Consortiums:
+      IntegrityCollab:
+        Organizations:
+          - *Police
+          - *Forensic

@@ -26,7 +26,7 @@ services:
     networks:
       - test
 
-  ca.forensic.evidence-vault.com:
+  ca.forensic.evidence-vault.com:   
     image: hyperledger/fabric-ca:latest
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
@@ -50,7 +50,7 @@ services:
 
   orderer.evidence-vault.com:
     container_name: orderer.evidence-vault.com
-    image: hyperledger/fabric-orderer:2.5.4
+    image: hyperledger/fabric-orderer:2.1
     dns_search: .
     environment:
       - ORDERER_GENERAL_LOGLEVEL=info

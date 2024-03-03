@@ -22,7 +22,8 @@ services:
       - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
       - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
 
-      - ORDERER_GENERAL_BOOTSTRAPMETHOD=none
+      - ORDERER_GENERAL_BOOTSTRAPMETHOD=file
+      - ORDERER_GENERAL_BOOTSTRAPFILE=/var/hyperledger/artifacts/evidencevault-genesis.block
       - ORDERER_CHANNELPARTICIPATION_ENABLED=true
       - ORDERER_ADMIN_TLS_ENABLED=true
       - ORDERER_ADMIN_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
@@ -43,6 +44,7 @@ services:
     networks:
       - test
     volumes:
-      - ./crypto-config/ordererOrganizations/evidence-vault.com/orderers/orderer.evidence-vault.com/tls:/var/hyperledger/orderer/tls
-      - ./crypto-config/ordererOrganizations/evidence-vault.com/orderers/orderer.evidence-vault.com/msp:/var/hyperledger/orderer/msp
-      # - /var/pavan/orderer:/var/hyperledger/production
+      - ../crypto-config/ordererOrganizations/evidence-vault.com/orderers/orderer.evidence-vault.com/tls:/var/hyperledger/orderer/tls
+      - ../crypto-config/ordererOrganizations/evidence-vault.com/orderers/orderer.evidence-vault.com/msp:/var/hyperledger/orderer/msp
+      - ../artifacts:/var/hyperledger/artifacts
+      - /var/evidence-vault:/var/hyperledger/production

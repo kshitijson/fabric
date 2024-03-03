@@ -44,7 +44,7 @@ services:
     networks:
       - test
     volumes:
-      - ../crypto-config/ordererOrganizations/evidence-vault.com/orderers/orderer.evidence-vault.com/tls:/var/hyperledger/orderer/tls
-      - ../crypto-config/ordererOrganizations/evidence-vault.com/orderers/orderer.evidence-vault.com/msp:/var/hyperledger/orderer/msp
+      - ../artifacts/crypto-config/ordererOrganizations/evidence-vault.com/orderers/orderer.evidence-vault.com/tls:/var/hyperledger/orderer/tls
+      - ../artifacts/crypto-config/ordererOrganizations/evidence-vault.com/orderers/orderer.evidence-vault.com/msp:/var/hyperledger/orderer/msp
       - ../artifacts:/var/hyperledger/artifacts
       - /var/evidence-vault:/var/hyperledger/production

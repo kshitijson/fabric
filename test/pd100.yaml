@@ -48,17 +48,17 @@ services:
       - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
 
       - CORE_PEER_TLS_ENABLED=true
-      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
-      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
-      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
-      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/peer/police.evidence-vault.com/peers/PD100.police.evidence-vault.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/peer/police.evidence-vault.com/peers/PD100.police.evidence-vault.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/peer/police.evidence-vault.com/peers/PD100.police.evidence-vault.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/police.evidence-vault.com/peers/PD100.police.evidence-vault.com/msp
     depends_on:
       - couchdbPD100
     ports:
       - 7051:7051
     volumes:
-      - ../artifacts/crypto-config/peerOrganizations/police.evidence-vault.com/peers/PD100.police.evidence-vault.com:/etc/hyperledger/fabric
+      - ../artifacts/crypto-config/peerOrganizations:/etc/hyperledger/peer
       - /var/run/:/host/var/run/
-      - /var/evidence-vault/peer0-org1:/var/hyperledger/production
+      - /var/evidence-vault/PD100:/var/hyperledger/production
     networks:
       - test

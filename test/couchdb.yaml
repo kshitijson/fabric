@@ -1,0 +1,18 @@
+version: "2"
+
+networks:
+  test:
+
+services:
+
+  couchdbPD100:
+    container_name: couchdbPD100
+    image: couchdb:3.3.3
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=adminpw
+    ports:
+      - 5984:5984
+    command: ["curl -X PUT -u admin:adminpw http://localhost:5984/_users"]
+    networks:
+      - test

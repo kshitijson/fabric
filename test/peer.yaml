@@ -13,6 +13,21 @@ services:
       - COUCHDB_PASSWORD=pd100
     ports:
       - 5984:5984
+    volumes:
+      - /var/evidence-vault/couchdb/couchdbPD100:/opt/couchdb/data
+    networks:
+      - test
+
+  couchdbPD101:
+    container_name: couchdbPD101
+    image: couchdb:3.3.3
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=adminpw
+    ports:
+      - 6984:5984
+    volumes:
+      - /var/evidence-vault/couchdb/couchdbPD101:/opt/couchdb/data
     networks:
       - test
 
@@ -53,7 +68,7 @@ services:
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/peer/police.evidence-vault.com/peers/PD100.police.evidence-vault.com/tls/ca.crt
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/police.evidence-vault.com/peers/PD100.police.evidence-vault.com/msp
     depends_on:
-      - couchdbPD101
+      - couchdbPD100
     ports:
       - 7051:7051
     volumes:
@@ -63,16 +78,7 @@ services:
     networks:
       - test
 
-  couchdbPD101:
-    container_name: couchdbPD101
-    image: couchdb:3.3.3
-    environment:
-      - COUCHDB_USER=pd101
-      - COUCHDB_PASSWORD=pd101
-    ports:
-      - 6984:5984
-    networks:
-      - test
+
 
   PD101.police.evidence-vault.com:
     container_name: PD101.police.evidence-vault.com
@@ -102,8 +108,8 @@ services:
 
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdbPD101:6984
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=pd101
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=pd101
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
 
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/peer/police.evidence-vault.com/peers/PD101.police.evidence-vault.com/tls/server.crt
@@ -111,7 +117,7 @@ services:
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/peer/police.evidence-vault.com/peers/PD101.police.evidence-vault.com/tls/ca.crt
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/police.evidence-vault.com/peers/PD101.police.evidence-vault.com/msp
     depends_on:
-      - couchdbPD100
+      - couchdbPD101
     ports:
       - 8051:8051
     volumes:

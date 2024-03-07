@@ -5,13 +5,15 @@ networks:
 
 services:
 
-  couchdbPD100:
-    container_name: couchdbPD100
+  couchdbPD101:
+    container_name: couchdbPD101
     image: couchdb:3.3.3
     environment:
       - COUCHDB_USER=admin
       - COUCHDB_PASSWORD=adminpw
     ports:
-      - 5984:5984
+      - 6984:5984
+    volumes:
+      - /var/evidence-vault/couchdb/couchdbPD101:/opt/couchdb/data
     networks:
       - test

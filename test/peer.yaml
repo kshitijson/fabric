@@ -1,7 +1,7 @@
 version: "2"
 
 networks:
-  test:
+  evidence:
 
 services:
   couchdbPD100:
@@ -11,11 +11,12 @@ services:
       - COUCHDB_USER=pd100
       - COUCHDB_PASSWORD=pd100
     ports:
-      - 5985:5984
+      - 5984:5984
     volumes:
       - /var/evidence-vault/couchdb/couchdbPD100:/opt/couchdb/data
     networks:
-      - test
+      - evidence
+
 
   couchdbPD101:
     container_name: couchdbPD101
@@ -28,7 +29,35 @@ services:
     volumes:
       - /var/evidence-vault/couchdb/couchdbPD101:/opt/couchdb/data
     networks:
-      - test
+      - evidence
+
+
+  couchdbFD100:
+    container_name: couchdbFD100
+    image: couchdb:3.3.3
+    environment:
+      - COUCHDB_USER=fd100
+      - COUCHDB_PASSWORD=fd100
+    ports:
+      - 7984:5984
+    volumes:
+      - /var/evidence-vault/couchdb/couchdbFD100:/opt/couchdb/data
+    networks:
+      - evidence
+
+
+  couchdbFD101:
+    container_name: couchdbFD101
+    image: couchdb:3.3.3
+    environment:
+      - COUCHDB_USER=fd101
+      - COUCHDB_PASSWORD=fd101
+    ports:
+      - 8984:5984
+    volumes:
+      - /var/evidence-vault/couchdb/couchdbFD101:/opt/couchdb/data
+    networks:
+      - evidence
 
 
   PD100.police.evidence-vault.com:
@@ -76,8 +105,7 @@ services:
       - /var/run/:/host/var/run/
       - /var/evidence-vault/peer/PD100:/var/hyperledger/production
     networks:
-      - test
-
+      - evidence
 
 
   PD101.police.evidence-vault.com:
@@ -125,4 +153,100 @@ services:
       - /var/run/:/host/var/run/
       - /var/evidence-vault/peer/PD101:/var/hyperledger/production
     networks:
-      - test  
+      - evidence
+
+
+  FD100.forensic.evidence-vault.com:
+    container_name: FD100.forensic.evidence-vault.com
+    image: hyperledger/fabric-peer:2.5
+    labels:
+      service: hyperledger-fabric
+    environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=info
+      - ORDERER_GENERAL_LOGLEVEL=info
+      - CORE_PEER_LOCALMSPID=ForensicMSP
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=artifacts_test
+
+      - CORE_PEER_ID=FD100.forensic.evidence-vault.com
+      - CORE_PEER_ADDRESS=FD100.forensic.evidence-vault.com:9051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
+      - CORE_PEER_CHAINCODEADDRESS=FD100.forensic.evidence-vault.com:9052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
+      # Peer used to bootstrap gossip within organisation
+
+      - CORE_PEER_GOSSIP_BOOTSTRAP=FD101.forensic.evidence-vault.com:10051
+
+      # Exposed for discovery Service
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=FD100.forensic.evidence-vault.com:9051
+
+      # - CORE_OPERATIONS_LISTENADDRESS=0.0.0.0:9440
+
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdbFD100:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=fd100
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=fd100
+
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/peer/forensic.evidence-vault.com/peers/FD100.forensic.evidence-vault.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/peer/forensic.evidence-vault.com/peers/FD100.forensic.evidence-vault.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/peer/forensic.evidence-vault.com/peers/FD100.forensic.evidence-vault.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/forensic.evidence-vault.com/peers/FD100.forensic.evidence-vault.com/msp
+    depends_on:
+      - couchdbFD100
+    ports:
+      - 9051:9051
+    volumes:
+      - ../artifacts/crypto-config/peerOrganizations:/etc/hyperledger/peer
+      - /var/run/:/host/var/run/
+      - /var/evidence-vault/peer/FD100:/var/hyperledger/production
+    networks:
+      - evidence
+
+
+  FD101.forensic.evidence-vault.com:
+    container_name: FD101.forensic.evidence-vault.com
+    image: hyperledger/fabric-peer:2.5
+    labels:
+      service: hyperledger-fabric
+    environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=info
+      - ORDERER_GENERAL_LOGLEVEL=info
+      - CORE_PEER_LOCALMSPID=ForensicMSP
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=artifacts_test
+
+      - CORE_PEER_ID=FD101.forensic.evidence-vault.com
+      - CORE_PEER_ADDRESS=FD101.forensic.evidence-vault.com:10051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:10051
+      - CORE_PEER_CHAINCODEADDRESS=FD101.forensic.evidence-vault.com:10052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:10052
+      # Peer used to bootstrap gossip within organisation
+
+      - CORE_PEER_GOSSIP_BOOTSTRAP=FD100.forensic.evidence-vault.com:9051
+
+      # Exposed for discovery Service
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=FD101.forensic.evidence-vault.com:10051
+
+      # - CORE_OPERATIONS_LISTENADDRESS=0.0.0.0:9440
+
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdbFD101:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=fd101
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=fd101
+
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/peer/forensic.evidence-vault.com/peers/FD101.forensic.evidence-vault.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/peer/forensic.evidence-vault.com/peers/FD101.forensic.evidence-vault.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/peer/forensic.evidence-vault.com/peers/FD101.forensic.evidence-vault.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/forensic.evidence-vault.com/peers/FD101.forensic.evidence-vault.com/msp
+    depends_on:
+      - couchdbFD101
+    ports:
+      - 10051:10051
+    volumes:
+      - ../artifacts/crypto-config/peerOrganizations:/etc/hyperledger/peer
+      - /var/run/:/host/var/run/
+      - /var/evidence-vault/peer/FD101:/var/hyperledger/production
+    networks:
+      - evidence  

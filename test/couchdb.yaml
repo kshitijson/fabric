@@ -5,28 +5,15 @@ networks:
 
 services:
 
-  couchdbPD101:
-    container_name: couchdbPD101
+  couchdbFD100:
+    container_name: couchdbFD101
     image: couchdb:3.3.3
     environment:
-      - COUCHDB_USER=pd101
-      - COUCHDB_PASSWORD=pd101
+      - COUCHDB_USER=fd101
+      - COUCHDB_PASSWORD=fd101
     ports:
-      - 5984:5984
+      - 8984:5984
     volumes:
-      - /var/evidence-vault/couchdb/couchdbPD101:/opt/couchdb/data
+      - /var/evidence-vault/couchdb/couchdbFD101:/opt/couchdb/data
     networks:
       - test
-
-        # couchdbPD100:
-  #   container_name: couchdbPD100
-  #   image: couchdb:3.3.3
-  #   environment:
-  #     - COUCHDB_USER=pd100
-  #     - COUCHDB_PASSWORD=pd100
-  #   ports:
-  #     - 5984:5984
-  #   volumes:
-  #     - /var/evidence-vault/couchdb/couchdbPD100:/opt/couchdb/data
-  #   networks:
-  #     - test

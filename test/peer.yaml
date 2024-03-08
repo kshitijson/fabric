@@ -4,7 +4,6 @@ networks:
   test:
 
 services:
-
   couchdbPD100:
     container_name: couchdbPD100
     image: couchdb:3.3.3
@@ -12,7 +11,7 @@ services:
       - COUCHDB_USER=pd100
       - COUCHDB_PASSWORD=pd100
     ports:
-      - 5984:5984
+      - 5985:5984
     volumes:
       - /var/evidence-vault/couchdb/couchdbPD100:/opt/couchdb/data
     networks:
@@ -22,14 +21,15 @@ services:
     container_name: couchdbPD101
     image: couchdb:3.3.3
     environment:
-      - COUCHDB_USER=admin
-      - COUCHDB_PASSWORD=adminpw
+      - COUCHDB_USER=pd101
+      - COUCHDB_PASSWORD=pd101
     ports:
       - 6984:5984
     volumes:
       - /var/evidence-vault/couchdb/couchdbPD101:/opt/couchdb/data
     networks:
       - test
+
 
   PD100.police.evidence-vault.com:
     container_name: PD100.police.evidence-vault.com
@@ -107,9 +107,9 @@ services:
       # - CORE_OPERATIONS_LISTENADDRESS=0.0.0.0:9440
 
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdbPD101:6984
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdbPD101:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=pd101
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=pd101
 
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/peer/police.evidence-vault.com/peers/PD101.police.evidence-vault.com/tls/server.crt
@@ -125,4 +125,4 @@ services:
       - /var/run/:/host/var/run/
       - /var/evidence-vault/peer/PD101:/var/hyperledger/production
     networks:
-      - test
+      - test  

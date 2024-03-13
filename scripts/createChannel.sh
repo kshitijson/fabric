@@ -1,10 +1,13 @@
-echo "0"
+
 export CORE_PEER_TLS_ENABLED=true
-export ORDERER_CA=${PWD}/crypto-config/ordererOrganizations/evidence-vault.com/orderers/orderer.evidence-vault.com/msp/tlscacerts/tlsca.evidence-vault.com-cert.pem
-export PD100_POLICE_CA=${PWD}/crypto-config/peerOrganizations/police.evidence-vault.com/peers/PD100.police.evidence-vault.com/tls/ca.crt
-export FD100_FORENSIC_CA=${PWD}/crypto-config/peerOrganizations/forensic.evidence-vault.com/peers/FD100.forensic.evidence-vault.com/tls/ca.crt
-export FABRIC_CFG_PATH=${PWD}/artifacts/config/
-echo "0"
+export ORDERER_CA=${PWD}/../artifacts/crypto-config/ordererOrganizations/evidence-vault.com/orderers/orderer.evidence-vault.com/msp/tlscacerts/tlsca.evidence-vault.com-cert.pem
+export PD100_POLICE_CA=${PWD}/../artifacts/crypto-config/peerOrganizations/police.evidence-vault.com/peers/PD100.police.evidence-vault.com/tls/ca.crt
+export FD100_FORENSIC_CA=${PWD}/../artifacts/crypto-config/peerOrganizations/forensic.evidence-vault.com/peers/FD100.forensic.evidence-vault.com/tls/ca.crt
+export FABRIC_CFG_PATH=${PWD}/../artifacts/config
+
+export ORDERER_ADMIN_TLS_SIGN_CERT=${PWD}/../artifacts/crypto-config/ordererOrganizations/evidence-vault.com/orderers/orderer.evidence-vault.com/tls/server.crt
+export ORDERER_ADMIN_TLS_PRIVATE_KEY=${PWD}/../artifacts/crypto-config/ordererOrganizations/evidence-vault.com/orderers/orderer.evidence-vault.com/tls/server.key
+
 
 export CHANNEL_NAME=mainchannel
 
@@ -18,12 +21,12 @@ export CHANNEL_NAME=mainchannel
 setGlobalsForPD100Police(){
     export CORE_PEER_LOCALMSPID="PoliceMSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PD100_POLICE_CA
-    export CORE_PEER_MSPCONFIGPATH=$PWD/crypto-config/peerOrganizations/police.evidence-vault.com/users/Admin@police.evidence-vault.com/msp/
+    export CORE_PEER_MSPCONFIGPATH=$PWD/../artifacts/crypto-config/peerOrganizations/police.evidence-vault.com/users/Admin@police.evidence-vault.com/msp/
     # export CORE_PEER_MSPCONFIGPATH=$PWD/crypto-config/peerOrganizations/police.evidence-vault.com/peers/PD100.police.evidence-vault.com/msp
-    export CORE_PEER_ADDRESS=localhost:8051
+    export CORE_PEER_ADDRESS=localhost:7051
 }
 
-# setGlobalsForPeer1Org1(){
+# setGlobalsForPeer1Org1(){ 
 #     export CORE_PEER_LOCALMSPID="Org1MSP"
 #     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_POLICE_CA
 #     export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
@@ -55,7 +58,7 @@ createChannel(){
     
     peer channel create -o localhost:7050 -c $CHANNEL_NAME \
     --ordererTLSHostnameOverride orderer.evidence-vault.com \
-    -f ./artifacts/mainchannel.tx \
+    -f ../artifacts/mainchannel.tx \
     --outputBlock ./channel-artifacts/${CHANNEL_NAME}.block \
     --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA
     echo "2"

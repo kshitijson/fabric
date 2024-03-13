@@ -66,11 +66,11 @@ Organizations:
 
 Capabilities:
   Channel: &ChannelCapabilities
-    V1_4_2: true
+    V2_0: true
   Orderer: &OrdererCapabilities
-    V1_4_2: true
+    V2_0: true
   Application: &ApplicationCapabilities
-    V1_4_2: true
+    V2_5: true
 
 ### Application ###
 
@@ -86,8 +86,8 @@ Application: &ApplicationDefaults
       Type: ImplicitMeta
       Rule: "ANY Writers"
     Admins:
-      Type: ImplicitMeta
-      Rule: "MAJORITY Admins"
+      Type: Signature
+      Rule: OR('PoliceMSP.admin', 'ForensicMSP.admin')
       # Type: Signature
       # Rule: "OR('PoliceMSP.admin', 'ForensicMSP.admin')"
     LifecycleEndorsement:
@@ -136,8 +136,8 @@ Channel: &ChannelDefaults
       Type: ImplicitMeta
       Rule: "ANY Writers"
     Admins:
-      Type: ImplicitMeta
-      Rule: "MAJORITY Admins"
+      Type: Signature
+      Rule: OR('PoliceMSP.admin', 'ForensicMSP.admin')
   Capabilities:
     <<: *ChannelCapabilities
 

@@ -1,9 +1,11 @@
 # echo "######   Deleting crypto-config     #######"
-# rm -rf ./crypto-config
+# rm -rf ../artifacts/crypto-config
 
 # echo ""
 # echo "######   Generating crypto-config     #######"
-# cryptogen generate --config=./crypto-config.yaml --output=./crypto-config
+# cryptogen generate --config=../artifacts/crypto-config.yaml --output=../artifacts/crypto-config
+
+# sleep 5
 
 echo ""
 echo "##### Deleting existing files #####"
@@ -39,4 +41,4 @@ rm ../artifacts/mainchannel.block
 CHANNEL_NAME="mainchannel"
 
 # Generate Channel Genesis block
-configtxgen -profile EvidenceVaultOrdererGenesis -configPath ../artifacts/ -channelID $CHANNEL_NAME  -outputBlock $CHANNEL_NAME.block
+configtxgen -profile EvidenceVaultOrdererGenesis -configPath ../artifacts/ -channelID $CHANNEL_NAME  -outputBlock ../artifacts/$CHANNEL_NAME.block

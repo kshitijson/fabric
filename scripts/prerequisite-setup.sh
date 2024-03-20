@@ -28,7 +28,7 @@ echo ""
 echo "##########   Adding binaries to path   ##########  "
 echo ""
 
-echo 'export PATH=$PATH:/root/hyperledger-fabric-bin/bin' >> ~/.bashrc
+echo 'export PATH=$PATH:/home/$(whoami)/hyperledger-fabric-bin/bin' >> ~/.bashrc
 sleep 3
 source ~/.bashrc
 

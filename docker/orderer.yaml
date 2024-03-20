@@ -6,7 +6,7 @@ networks:
 services:
   orderer.evidence-vault.com:
     container_name: orderer.evidence-vault.com
-    image: hyperledger/fabric-orderer:2.5.4
+    image: hyperledger/fabric-orderer:2.5.6
     environment:
       - FABRIC_LOGGING_SPEC=INFO
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0

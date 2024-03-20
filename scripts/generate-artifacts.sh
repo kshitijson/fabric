@@ -9,7 +9,7 @@
 
 echo ""
 echo "##### Deleting existing files #####"
-rm ../artifacts/mainchannel.block
+rm ../channel-artifacts/mainchannel.block
 # rm evidencevault-genesis.block
 # rm mainchannel.tx
 # rm Policeanchors.tx
@@ -41,4 +41,4 @@ rm ../artifacts/mainchannel.block
 CHANNEL_NAME="mainchannel"
 
 # Generate Channel Genesis block
-configtxgen -profile EvidenceVaultOrdererGenesis -configPath ../artifacts/ -channelID $CHANNEL_NAME  -outputBlock ../artifacts/$CHANNEL_NAME.block
+configtxgen -profile EvidenceVaultOrdererGenesis -configPath ../artifacts/ -channelID $CHANNEL_NAME  -outputBlock ../channel-artifacts/$CHANNEL_NAME.block

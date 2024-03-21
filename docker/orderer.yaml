@@ -1,7 +1,7 @@
 version: "2"
 
 networks:
-  test:
+  evidence:
 
 services:
   orderer.evidence-vault.com:
@@ -41,7 +41,7 @@ services:
       - 7053:7053
       - 8443:8443
     networks:
-      - test
+      - evidence
     volumes:
       - ../artifacts/crypto-config/ordererOrganizations/evidence-vault.com/orderers/orderer.evidence-vault.com/tls:/var/hyperledger/orderer/tls
       - ../artifacts/crypto-config/ordererOrganizations/evidence-vault.com/orderers/orderer.evidence-vault.com/msp:/var/hyperledger/orderer/msp
